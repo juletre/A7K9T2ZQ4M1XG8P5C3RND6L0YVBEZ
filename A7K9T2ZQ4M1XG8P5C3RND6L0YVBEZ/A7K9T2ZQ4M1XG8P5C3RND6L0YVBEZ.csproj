@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="windows\pos_hospitality\pos_hospitality_4x3.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="windows\pos_store\pos_store_4x3.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
