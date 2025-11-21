@@ -1,6 +1,9 @@
 ﻿using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.company_selection;
 using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.settlements;
 using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.support;
+using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality;
+using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store;
+using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.administration;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,25 +31,16 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
 
         private void OpenPos_Click(object sender, RoutedEventArgs e)
         {
-            if (pos_type == 1 && aspect_ratio == 1)
-                new pos_hospitality_16x9().Show();
-            else if (pos_type == 1 && aspect_ratio == 2)
-                new pos_hospitality_4x3().Show();
-            else if (pos_type == 2 && aspect_ratio == 1)
-                new pos_store_16x9().Show();
-            else if (pos_type == 2 && aspect_ratio == 2)
-                new pos_store_4x3().Show();
+            if (pos_type == 1)
+                new pos_hospitality().Show();
+            else if (pos_type == 2)
+                new pos_store().Show();
             else
                 MessageBox.Show("Error");
         }
         private void OpenAdmin_Click(object sender, RoutedEventArgs e)
         {
-            if (aspect_ratio == 1)
-                new admin_16x9().Show();
-            else if (aspect_ratio == 2)
-                new admin_4x3().Show();
-            else
-                MessageBox.Show("Error");
+                new admin_window().Show();
         }
         private void Open_Settlement(object sender, RoutedEventArgs e)
         {
@@ -54,7 +48,7 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
         }
         private void Open_Support(object sender, RoutedEventArgs e)
         {
-            new support().Show();
+            new support_window().Show();
         }
         private void Open_Salespoint_Selector(object sender, RoutedEventArgs e)
         {

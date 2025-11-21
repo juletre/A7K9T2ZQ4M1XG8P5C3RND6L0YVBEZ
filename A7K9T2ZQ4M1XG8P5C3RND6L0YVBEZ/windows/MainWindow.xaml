@@ -14,10 +14,10 @@
         <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="125" Height="75" Click="OpenPos_Click" Margin="0,0,0,20" Content="KASSE" FontSize="32" FontWeight="Bold" />
         <Image Margin="0,75,400,125" OpacityMask="#FFB4B4B4" Source="/Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png" />
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top">hello world</TextBlock>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-120,-420,0" FontSize="24" FontWeight="Bold">Firmanavn</TextBlock>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-60,-420,0">Lisensnr. 00000</TextBlock>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,-420,0">postnummer_klient</TextBlock>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,-420,0">poststed_klient</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-120,-420,0" FontSize="24" FontWeight="Bold">company name</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-60,-420,0">lisencenumber</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,-420,0">zip-code</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,60,-420,0">city</TextBlock>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom">EvPOS™ </TextBlock>
     </Grid>
 </Window>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.Helpers;
+using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.administration;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,22 +15,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
+namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
 {
     /// <summary>
-    /// Interaction logic for pos_hospitality_16x9.xaml
+    /// Interaction logic for pos_hospitality.xaml
     /// </summary>
-    public partial class pos_hospitality_16x9 : Window
+    public partial class pos_hospitality : Window
     {
         public ObservableCollection<OrderItem> OrderItems { get; set; }
 
-        public pos_hospitality_16x9()
+        public pos_hospitality()
         {
             InitializeComponent();
-            WindowStyle = WindowStyle.None;
-            WindowState = WindowState.Maximized;
-            ResizeMode = ResizeMode.NoResize;
-            Topmost = true;
+
+            SelectAndFillMonitor.ShowFullScreenOnConfiguredScreen(this);
+
+            functionButton10.Content = "EXIT";
 
             OrderItems = new ObservableCollection<OrderItem>
             {
@@ -57,6 +59,11 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
         {
             double total = OrderItems.Sum(i => i.Price * i.Quantity);
             TotalText.Text = total.ToString("0.00");
+        }
+
+        private void functionButton10_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 

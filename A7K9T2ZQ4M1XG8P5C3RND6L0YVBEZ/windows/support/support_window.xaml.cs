@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
+namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.support
 {
     /// <summary>
-    /// Interaction logic for pos_store_4x3.xaml
+    /// Interaction logic for support_window.xaml
     /// </summary>
-    public partial class pos_store_4x3 : Window
+    public partial class support_window : Window
     {
-        public pos_store_4x3()
+        public support_window()
         {
             InitializeComponent();
         }

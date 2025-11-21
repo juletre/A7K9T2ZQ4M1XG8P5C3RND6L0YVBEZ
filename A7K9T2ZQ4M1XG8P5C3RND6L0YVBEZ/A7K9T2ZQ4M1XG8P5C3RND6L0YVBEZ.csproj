@@ -13,16 +13,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png" />
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="windows\pos_hospitality\pos_hospitality_4x3.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="windows\pos_store\pos_store_4x3.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Resource Include="Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
 </Project>

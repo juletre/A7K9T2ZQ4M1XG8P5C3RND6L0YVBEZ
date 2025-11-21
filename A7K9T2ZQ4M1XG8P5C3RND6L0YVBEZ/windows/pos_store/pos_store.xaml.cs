@@ -1,4 +1,6 @@
-﻿using System;
+﻿using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.Helpers;
+using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.administration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,20 +14,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
+namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
 {
     /// <summary>
-    /// Interaction logic for admin_16x9.xaml
+    /// Interaction logic for pos_store.xaml
     /// </summary>
-    public partial class admin_16x9 : Window
+    public partial class pos_store : Window
     {
-        public admin_16x9()
+        public pos_store()
         {
             InitializeComponent();
-            WindowStyle = WindowStyle.None;
-            WindowState = WindowState.Maximized;
-            ResizeMode = ResizeMode.NoResize;
-            Topmost = true;
+
+            SelectAndFillMonitor.ShowFullScreenOnConfiguredScreen(this);
         }
     }
 }

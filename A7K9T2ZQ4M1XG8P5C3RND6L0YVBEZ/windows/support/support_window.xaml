@@ -1,11 +1,11 @@
-﻿<Window x:Class="A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.pos_store_4x3"
+﻿<Window x:Class="A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.support.support_window"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ"
+        xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.support"
         mc:Ignorable="d"
-        Title="pos_store_4x3" Height="720" Width="1024">
+        Title="support_window" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         
     </Grid>
