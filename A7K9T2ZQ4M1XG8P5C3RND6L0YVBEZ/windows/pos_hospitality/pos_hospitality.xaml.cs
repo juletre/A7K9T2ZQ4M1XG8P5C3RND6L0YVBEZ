@@ -1,28 +1,71 @@
 ﻿using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.Helpers;
-using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.administration;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
 {
     /// <summary>
     /// Interaction logic for pos_hospitality.xaml
     /// </summary>
-    public partial class pos_hospitality : Window
+    public partial class pos_hospitality : Window, INotifyPropertyChanged
     {
-        public ObservableCollection<OrderItem> OrderItems { get; set; }
+        public ObservableCollection<string> Categories { get; } = new();
+        public ObservableCollection<Product> Products { get; } = new();
+        public ObservableCollection<OrderLine> OrderLines { get; } = new();
+
+        public ICollectionView ProductsView { get; private set; }
+
+        private string? selectedCategory;
+        public string? SelectedCategory
+        {
+            get => selectedCategory;
+            set
+            {
+                if (selectedCategory != value)
+                {
+                    selectedCategory = value;
+                    OnPropertyChanged(nameof(SelectedCategory));
+                    ProductsView.Refresh();
+                }
+            }
+        }
+
+        private decimal subtotal;
+        public decimal Subtotal
+        {
+            get => subtotal;
+            private set
+            {
+                subtotal = value;
+                OnPropertyChanged(nameof(Subtotal));
+            }
+        }
+
+        private decimal tax;
+        public decimal Tax
+        {
+            get => tax;
+            private set
+            {
+                tax = value;
+                OnPropertyChanged(nameof(Tax));
+            }
+        }
+
+        private decimal total;
+        public decimal Total
+        {
+            get => total;
+            private set
+            {
+                total = value;
+                OnPropertyChanged(nameof(Total));
+            }
+        }
 
         public pos_hospitality()
         {
@@ -30,47 +73,182 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
 
             SelectAndFillMonitor.ShowFullScreenOnConfiguredScreen(this);
 
-            functionButton10.Content = "EXIT";
+            DataContext = this;
 
-            OrderItems = new ObservableCollection<OrderItem>
-            {
-                new OrderItem { Product = "Coffee", Quantity = 1, Price = 29.00 },
-                new OrderItem { Product = "Sandwich", Quantity = 2, Price = 89.00 },
-                new OrderItem { Product = "Juice", Quantity = 1, Price = 45.00 }
-            };
+            Categories.Add("Alle varer");
+            Categories.Add("Mat");
+            Categories.Add("Drikke");
+            Categories.Add("Dessert");
+            Categories.Add("Tilbehør");
+            Categories.Add("Kampanjer");
 
-            OrderList.ItemsSource = OrderItems;
-            UpdateTotal();
+            Products.Add(new Product("Cappuccino", "Drikke", 42.00m));
+            Products.Add(new Product("Espresso", "Drikke", 34.00m));
+            Products.Add(new Product("Islatte", "Drikke", 49.00m));
+            Products.Add(new Product("Mineralvann", "Drikke", 32.00m));
+            Products.Add(new Product("Club sandwich", "Mat", 129.00m));
+            Products.Add(new Product("Caesar salat", "Mat", 119.00m));
+            Products.Add(new Product("Burger", "Mat", 159.00m));
+            Products.Add(new Product("Pommes frites", "Tilbehør", 59.00m));
+            Products.Add(new Product("Brownie", "Dessert", 79.00m));
+            Products.Add(new Product("Iskrem", "Dessert", 65.00m));
 
-            // Når listen endres (legg til/fjern), oppdater totalsummen
-            OrderItems.CollectionChanged += (s, e) => UpdateTotal();
+            ProductsView = CollectionViewSource.GetDefaultView(Products);
+            ProductsView.Filter = FilterProducts;
+
+            SelectedCategory = Categories.First();
+            CategoryList.SelectedIndex = 0;
+
+            OrderLines.CollectionChanged += (_, __) => UpdateTotals();
+            UpdateTotals();
         }
 
-        private void RemoveItem_Click(object sender, RoutedEventArgs e)
+        private bool FilterProducts(object item)
         {
-            if (sender is Button button && button.DataContext is OrderItem item)
+            if (item is not Product product)
             {
-                OrderItems.Remove(item);
-                UpdateTotal();
+                return false;
+            }
+
+            if (SelectedCategory == "Alle varer" || string.IsNullOrWhiteSpace(SelectedCategory))
+            {
+                return true;
+            }
+
+            return product.Category == SelectedCategory;
+        }
+
+        private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CategoryList.SelectedItem is string category)
+            {
+                SelectedCategory = category;
             }
         }
 
-        private void UpdateTotal()
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
         {
-            double total = OrderItems.Sum(i => i.Price * i.Quantity);
-            TotalText.Text = total.ToString("0.00");
+            if (sender is not Button button || button.DataContext is not Product product)
+            {
+                return;
+            }
+
+            var existing = OrderLines.FirstOrDefault(line => line.Product == product.Name);
+            if (existing != null)
+            {
+                existing.Quantity += 1;
+                existing.LineTotal = existing.Quantity * existing.UnitPrice;
+            }
+            else
+            {
+                OrderLines.Add(new OrderLine
+                {
+                    Product = product.Name,
+                    Quantity = 1,
+                    UnitPrice = product.Price,
+                    LineTotal = product.Price
+                });
+            }
+
+            UpdateTotals();
         }
 
-        private void functionButton10_Click(object sender, RoutedEventArgs e)
+        private void RemoveLine_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            if (sender is Button button && button.DataContext is OrderLine line)
+            {
+                OrderLines.Remove(line);
+                UpdateTotals();
+            }
+        }
+
+        private void ClearOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OrderLines.Clear();
+            UpdateTotals();
+        }
+
+        private void UpdateTotals()
+        {
+            Subtotal = OrderLines.Sum(line => line.LineTotal);
+            Tax = Subtotal * 0.25m;
+            Total = Subtotal + Tax;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public class OrderItem
+    public class Product
     {
-        public string Product { get; set; }
-        public int Quantity { get; set; }
-        public double Price { get; set; }
+        public Product(string name, string category, decimal price)
+        {
+            Name = name;
+            Category = category;
+            Price = price;
+        }
+
+        public string Name { get; }
+        public string Category { get; }
+        public decimal Price { get; }
+    }
+
+    public class OrderLine : INotifyPropertyChanged
+    {
+        private int quantity;
+        private decimal unitPrice;
+        private decimal lineTotal;
+
+        public string Product { get; set; } = string.Empty;
+
+        public int Quantity
+        {
+            get => quantity;
+            set
+            {
+                if (quantity != value)
+                {
+                    quantity = value;
+                    OnPropertyChanged(nameof(Quantity));
+                }
+            }
+        }
+
+        public decimal UnitPrice
+        {
+            get => unitPrice;
+            set
+            {
+                if (unitPrice != value)
+                {
+                    unitPrice = value;
+                    OnPropertyChanged(nameof(UnitPrice));
+                }
+            }
+        }
+
+        public decimal LineTotal
+        {
+            get => lineTotal;
+            set
+            {
+                if (lineTotal != value)
+                {
+                    lineTotal = value;
+                    OnPropertyChanged(nameof(LineTotal));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

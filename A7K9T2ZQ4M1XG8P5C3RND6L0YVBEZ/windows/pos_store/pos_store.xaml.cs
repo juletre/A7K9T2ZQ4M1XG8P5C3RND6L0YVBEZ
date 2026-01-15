@@ -1,31 +1,261 @@
 ﻿using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.Helpers;
-using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.administration;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
 {
     /// <summary>
     /// Interaction logic for pos_store.xaml
     /// </summary>
-    public partial class pos_store : Window
+    public partial class pos_store : Window, INotifyPropertyChanged
     {
+        public ObservableCollection<string> Categories { get; } = new();
+        public ObservableCollection<Product> Products { get; } = new();
+        public ObservableCollection<OrderLine> OrderLines { get; } = new();
+
+        public ICollectionView ProductsView { get; private set; }
+
+        private string? selectedCategory;
+        public string? SelectedCategory
+        {
+            get => selectedCategory;
+            set
+            {
+                if (selectedCategory != value)
+                {
+                    selectedCategory = value;
+                    OnPropertyChanged(nameof(SelectedCategory));
+                    ProductsView.Refresh();
+                }
+            }
+        }
+
+        private decimal subtotal;
+        public decimal Subtotal
+        {
+            get => subtotal;
+            private set
+            {
+                subtotal = value;
+                OnPropertyChanged(nameof(Subtotal));
+            }
+        }
+
+        private decimal tax;
+        public decimal Tax
+        {
+            get => tax;
+            private set
+            {
+                tax = value;
+                OnPropertyChanged(nameof(Tax));
+            }
+        }
+
+        private decimal total;
+        public decimal Total
+        {
+            get => total;
+            private set
+            {
+                total = value;
+                OnPropertyChanged(nameof(Total));
+            }
+        }
+
         public pos_store()
         {
             InitializeComponent();
 
             SelectAndFillMonitor.ShowFullScreenOnConfiguredScreen(this);
+
+            DataContext = this;
+
+            Categories.Add("Alle varer");
+            Categories.Add("Drikke");
+            Categories.Add("Snacks");
+            Categories.Add("Dagligvarer");
+            Categories.Add("Helse");
+            Categories.Add("Husholdning");
+            Categories.Add("Gavekort");
+
+            Products.Add(new Product("Kaffe latte", "Drikke", 39.00m));
+            Products.Add(new Product("Iskald te", "Drikke", 32.00m));
+            Products.Add(new Product("Smoothie", "Drikke", 45.00m));
+            Products.Add(new Product("Mineralvann", "Drikke", 28.00m));
+            Products.Add(new Product("Potetgull", "Snacks", 35.00m));
+            Products.Add(new Product("Nøtteblanding", "Snacks", 42.00m));
+            Products.Add(new Product("Sjokolade", "Snacks", 29.00m));
+            Products.Add(new Product("Kjeks", "Snacks", 25.00m));
+            Products.Add(new Product("Brød", "Dagligvarer", 32.00m));
+            Products.Add(new Product("Melk", "Dagligvarer", 24.00m));
+            Products.Add(new Product("Egg", "Dagligvarer", 45.00m));
+            Products.Add(new Product("Yoghurt", "Dagligvarer", 21.00m));
+            Products.Add(new Product("Håndkrem", "Helse", 55.00m));
+            Products.Add(new Product("Plaster", "Helse", 29.00m));
+            Products.Add(new Product("Vitaminer", "Helse", 89.00m));
+            Products.Add(new Product("Gavekort 200", "Gavekort", 200.00m));
+
+            ProductsView = CollectionViewSource.GetDefaultView(Products);
+            ProductsView.Filter = FilterProducts;
+
+            SelectedCategory = Categories.First();
+            CategoryList.SelectedIndex = 0;
+
+            OrderLines.CollectionChanged += (_, __) => UpdateTotals();
+            UpdateTotals();
+        }
+
+        private bool FilterProducts(object item)
+        {
+            if (item is not Product product)
+            {
+                return false;
+            }
+
+            if (SelectedCategory == "Alle varer" || string.IsNullOrWhiteSpace(SelectedCategory))
+            {
+                return true;
+            }
+
+            return product.Category == SelectedCategory;
+        }
+
+        private void CategoryList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CategoryList.SelectedItem is string category)
+            {
+                SelectedCategory = category;
+            }
+        }
+
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button button || button.DataContext is not Product product)
+            {
+                return;
+            }
+
+            var existing = OrderLines.FirstOrDefault(line => line.Product == product.Name);
+            if (existing != null)
+            {
+                existing.Quantity += 1;
+                existing.LineTotal = existing.Quantity * existing.UnitPrice;
+            }
+            else
+            {
+                OrderLines.Add(new OrderLine
+                {
+                    Product = product.Name,
+                    Quantity = 1,
+                    UnitPrice = product.Price,
+                    LineTotal = product.Price
+                });
+            }
+
+            UpdateTotals();
+        }
+
+        private void RemoveLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is OrderLine line)
+            {
+                OrderLines.Remove(line);
+                UpdateTotals();
+            }
+        }
+
+        private void ClearOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OrderLines.Clear();
+            UpdateTotals();
+        }
+
+        private void UpdateTotals()
+        {
+            Subtotal = OrderLines.Sum(line => line.LineTotal);
+            Tax = Subtotal * 0.25m;
+            Total = Subtotal + Tax;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class Product
+    {
+        public Product(string name, string category, decimal price)
+        {
+            Name = name;
+            Category = category;
+            Price = price;
+        }
+
+        public string Name { get; }
+        public string Category { get; }
+        public decimal Price { get; }
+    }
+
+    public class OrderLine : INotifyPropertyChanged
+    {
+        private int quantity;
+        private decimal unitPrice;
+        private decimal lineTotal;
+
+        public string Product { get; set; } = string.Empty;
+
+        public int Quantity
+        {
+            get => quantity;
+            set
+            {
+                if (quantity != value)
+                {
+                    quantity = value;
+                    OnPropertyChanged(nameof(Quantity));
+                }
+            }
+        }
+
+        public decimal UnitPrice
+        {
+            get => unitPrice;
+            set
+            {
+                if (unitPrice != value)
+                {
+                    unitPrice = value;
+                    OnPropertyChanged(nameof(UnitPrice));
+                }
+            }
+        }
+
+        public decimal LineTotal
+        {
+            get => lineTotal;
+            set
+            {
+                if (lineTotal != value)
+                {
+                    lineTotal = value;
+                    OnPropertyChanged(nameof(LineTotal));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
