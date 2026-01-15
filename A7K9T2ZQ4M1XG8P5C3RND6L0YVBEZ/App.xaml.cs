@@ -20,6 +20,28 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
             var licenseConnection = ConfigurationManager.ConnectionStrings["LicenseDatabase"]?.ConnectionString ?? string.Empty;
             var licenseNumber = ConfigurationManager.AppSettings["LicenseNumber"] ?? string.Empty;
 
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(posConnection))
+                {
+                    var posInitializer = new DatabaseInitializer(posConnection);
+                    posInitializer.EnsurePosTablesAsync().GetAwaiter().GetResult();
+                }
+                else
+                {
+                    MessageBox.Show("Manglende tilkobling til POS-database. Oppdater App.config.");
+                }
+
+                if (!string.IsNullOrWhiteSpace(licenseConnection))
+                {
+                    LicenseService = new LicenseService(licenseConnection, licenseNumber);
+                    LicenseService.InitializeAsync().GetAwaiter().GetResult();
+                }
+                else
+                {
+                    MessageBox.Show("Manglende tilkobling til lisensdatabase. Oppdater App.config.");
+                }
+
             if (string.IsNullOrWhiteSpace(posConnection))
             {
                 MessageBox.Show("Manglende tilkobling til POS-database. Oppdater App.config.");

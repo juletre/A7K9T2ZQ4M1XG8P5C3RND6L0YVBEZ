@@ -105,6 +105,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="520"/>
             <ColumnDefinition Width="380"/>
         </Grid.ColumnDefinitions>
 
@@ -149,6 +150,7 @@
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding ProductsView}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
+                            <UniformGrid Columns="3" Rows="3"/>
                             <UniformGrid Columns="4" Rows="4"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
@@ -219,6 +221,15 @@
 
                 <StackPanel Grid.Row="2">
                     <UniformGrid Columns="2" Margin="0,0,0,6">
+                        <Button Content="Bank 1" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
+                        <Button Content="Bank 2" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
+                        <Button Content="Cash" Style="{StaticResource PrimaryButton}" Background="#FF4F8A10"/>
+                        <Button Content="Vipps" Style="{StaticResource PrimaryButton}" Background="#FFEF6C00"/>
+                        <Button Content="Betal" Style="{StaticResource PrimaryButton}" Background="#FF3A6EA5"/>
+                        <Button Content="TBA" Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
+                        <Button Content="Siste kvitt." Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
+                        <Button Content="Ny ordre" Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
+                    </UniformGrid>
                         <Button Content="Kort" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
                         <Button Content="Vipps" Style="{StaticResource PrimaryButton}" Background="#FFEF6C00"/>
                         <Button Content="Kontant" Style="{StaticResource PrimaryButton}" Background="#FF4F8A10"/>
