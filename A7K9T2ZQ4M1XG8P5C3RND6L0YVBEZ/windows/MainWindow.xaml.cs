@@ -31,12 +31,32 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
 
         private void OpenPos_Click(object sender, RoutedEventArgs e)
         {
+            if (App.LicenseService == null)
+            {
+                MessageBox.Show("Lisenskontroll er ikke tilgjengelig. Kontroller tilkobling til lisensdatabase.");
+                return;
+            }
+
+            Window? posWindow = null;
             if (pos_type == 1)
-                new pos_hospitality().Show();
+                posWindow = new pos_hospitality();
             else if (pos_type == 2)
-                new pos_store().Show();
+                posWindow = new pos_store();
             else
                 MessageBox.Show("Error");
+
+            if (posWindow == null)
+            {
+                return;
+            }
+
+            if (!App.LicenseService.TryRegisterPosWindow(posWindow, out var message))
+            {
+                MessageBox.Show(message);
+                return;
+            }
+
+            posWindow.Show();
         }
         private void OpenAdmin_Click(object sender, RoutedEventArgs e)
         {

@@ -5,8 +5,105 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.company_selection"
         mc:Ignorable="d"
-        Title="salespoint_selector" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
-        
+        Title="Velg salgssted" Height="600" Width="900" WindowStartupLocation="CenterScreen" Background="#FF1E1E1E">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,16">
+            <TextBlock Text="Velg salgssted" Foreground="White" FontSize="26" FontWeight="Bold"/>
+            <TextBlock Text="Velg hvilket salgssted du vil åpne i EvPOS." Foreground="#FFB0B0B0" FontSize="14"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="#FF2A2A2A" CornerRadius="12" Padding="12" Margin="0,0,16,0">
+            <StackPanel>
+                <TextBlock Text="Tilgjengelige salgssteder" Foreground="White" FontWeight="Bold" FontSize="16" Margin="4"/>
+                <ListBox ItemsSource="{Binding Salespoints}"
+                         SelectedItem="{Binding SelectedSalespoint, Mode=TwoWay}"
+                         DisplayMemberPath="Name"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Foreground="White">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Margin" Value="4"/>
+                            <Setter Property="Padding" Value="12"/>
+                            <Setter Property="Background" Value="#FF3A3A3A"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#FF3A6EA5"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#FF454545"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Background="#FF2A2A2A" CornerRadius="12" Padding="16">
+            <StackPanel>
+                <TextBlock Text="Detaljer" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Navn" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Column="1" Text="{Binding SelectedSalespoint.Name}" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="1" Text="Org.nr" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedSalespoint.Location}" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="2" Text="Type" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedSalespoint.Type}" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="3" Text="Terminal" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedSalespoint.TerminalId}" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="4" Text="Status" Foreground="#FFB0B0B0" Margin="0,0,12,0"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedSalespoint.Status}" Foreground="White"/>
+                </Grid>
+
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Tips" Foreground="White" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                        <TextBlock Text="Velg riktig salgssted for å åpne riktige varer, priser og oppgjør." Foreground="#FFB0B0B0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Avbryt" Width="120" Height="40" Margin="0,0,12,0" Background="#FF3A3A3A" Foreground="White" Click="Close_Click"/>
+            <Button Content="Åpne salgssted" Width="180" Height="40" Background="#FF3A6EA5" Foreground="White" Click="OpenSalespoint_Click"/>
+        </StackPanel>
     </Grid>
 </Window>

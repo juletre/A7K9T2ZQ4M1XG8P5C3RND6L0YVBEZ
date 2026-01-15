@@ -5,8 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.support"
         mc:Ignorable="d"
-        Title="support_window" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid>
-        
+        Title="Support" Height="600" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF1E1E1E">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,16">
+            <TextBlock Text="Support" Foreground="White" FontSize="26" FontWeight="Bold"/>
+            <TextBlock Text="Hurtigtilgang til support, status og vedlikehold." Foreground="#FFB0B0B0" FontSize="14"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="#FF2A2A2A" CornerRadius="12" Padding="16" Margin="0,0,16,0">
+            <StackPanel>
+                <TextBlock Text="Systemstatus" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="Internett" Foreground="White"/>
+                        <TextBlock Text="Tilkoblet" Foreground="#FF8BC34A"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="Betalingsterminal" Foreground="White"/>
+                        <TextBlock Text="Online" Foreground="#FF8BC34A"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="Synkronisering" Foreground="White"/>
+                        <TextBlock Text="Oppdatert for 2 min siden" Foreground="#FFB0B0B0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Background="#FF2A2A2A" CornerRadius="12" Padding="16">
+            <StackPanel>
+                <TextBlock Text="Kontakt support" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                <TextBlock Text="Telefon" Foreground="#FFB0B0B0"/>
+                <TextBlock Text="+47 22 00 00 00" Foreground="White" Margin="0,0,0,8"/>
+                <TextBlock Text="E-post" Foreground="#FFB0B0B0"/>
+                <TextBlock Text="support@eventlink.no" Foreground="White" Margin="0,0,0,16"/>
+
+                <TextBlock Text="Hurtighandlinger" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                <Button Content="Send logg til support" Height="44" Margin="0,0,0,8" Background="#FF3A6EA5" Foreground="White"/>
+                <Button Content="Test betalingsterminal" Height="44" Margin="0,0,0,8" Background="#FF4B4B4B" Foreground="White"/>
+                <Button Content="Restart synkronisering" Height="44" Background="#FF4B4B4B" Foreground="White"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Lukk" Width="120" Height="40" Background="#FF3A3A3A" Foreground="White" Click="Close_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
