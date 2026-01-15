@@ -106,6 +106,7 @@
             <ColumnDefinition Width="220"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="520"/>
+            <ColumnDefinition Width="380"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.ColumnSpan="3" Background="#FF2A2A2A" CornerRadius="12" Padding="16" Margin="0,0,0,16">
@@ -150,6 +151,7 @@
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Columns="3" Rows="3"/>
+                            <UniformGrid Columns="4" Rows="4"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -228,6 +230,12 @@
                         <Button Content="Siste kvitt." Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
                         <Button Content="Ny ordre" Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
                     </UniformGrid>
+                        <Button Content="Kort" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
+                        <Button Content="Vipps" Style="{StaticResource PrimaryButton}" Background="#FFEF6C00"/>
+                        <Button Content="Kontant" Style="{StaticResource PrimaryButton}" Background="#FF4F8A10"/>
+                        <Button Content="Faktura" Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
+                    </UniformGrid>
+                    <Button Content="Tøm handlekurv" Style="{StaticResource PrimaryButton}" Background="#FF8C2B2B" Click="ClearOrder_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
