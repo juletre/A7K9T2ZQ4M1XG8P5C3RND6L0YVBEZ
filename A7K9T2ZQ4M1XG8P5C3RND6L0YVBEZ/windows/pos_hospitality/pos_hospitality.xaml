@@ -32,8 +32,34 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="NumberButton" TargetType="Button">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Background" Value="#FF3A6EA5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF2F5C89"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF244463"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="CategoryItem" TargetType="ListBoxItem">
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Padding" Value="12"/>
             <Setter Property="Foreground" Value="White"/>
@@ -165,10 +191,10 @@
                     </StackPanel>
                 </StackPanel>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding ProductsView}">
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding ProductsView}" Margin="0,56,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="4" Rows="4"/>
+                            <UniformGrid Columns="5" Rows="8"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
@@ -188,6 +214,7 @@
         <Border Grid.Row="1" Grid.Column="2" Background="#FF242424" CornerRadius="12" Padding="12">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -219,14 +246,19 @@
                         <DataGridTemplateColumn Header="" Width="50">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="X" Width="32" Height="32" Background="#FF8C2B2B" Foreground="White" Click="RemoveLine_Click"/>
+                                    <Button Content="X"
+                            Width="32"
+                            Height="32"
+                            Background="#FF8C2B2B"
+                            Foreground="White"
+                            Click="RemoveLine_Click"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                <StackPanel Grid.Row="2" Margin="0,0,0,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -240,7 +272,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="MVA (25%)" Style="{StaticResource SummaryLabel}"/>
+                        <TextBlock Text="MVA" Style="{StaticResource SummaryLabel}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Tax, StringFormat=kr {0:0.00}}" Style="{StaticResource SummaryValue}"/>
                     </Grid>
                     <Grid Margin="0,6,0,0">
@@ -255,22 +287,22 @@
 
                 <StackPanel Grid.Row="2" Margin="0,0,0,12">
                     <UniformGrid Columns="3" Rows="4" Margin="0,8,0,0">
-                        <Button Content="1" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="2" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="3" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="4" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="5" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="6" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="7" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="8" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="9" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="Clear" Style="{StaticResource PrimaryButton}" Background="#FF4B4B4B"/>
-                        <Button Content="0" Style="{StaticResource PrimaryButton}"/>
-                        <Button Content="DEL" Style="{StaticResource PrimaryButton}" Background="#FF8C2B2B"/>
+                        <Button Content="1" Style="{StaticResource NumberButton}"/>
+                        <Button Content="2" Style="{StaticResource NumberButton}"/>
+                        <Button Content="3" Style="{StaticResource NumberButton}"/>
+                        <Button Content="4" Style="{StaticResource NumberButton}"/>
+                        <Button Content="5" Style="{StaticResource NumberButton}"/>
+                        <Button Content="6" Style="{StaticResource NumberButton}"/>
+                        <Button Content="7" Style="{StaticResource NumberButton}"/>
+                        <Button Content="8" Style="{StaticResource NumberButton}"/>
+                        <Button Content="9" Style="{StaticResource NumberButton}"/>
+                        <Button Content="Clear" Style="{StaticResource NumberButton}" Background="#FF4B4B4B"/>
+                        <Button Content="0" Style="{StaticResource NumberButton}"/>
+                        <Button Content="DEL" Style="{StaticResource NumberButton}" Background="#FF8C2B2B"/>
                     </UniformGrid>
                 </StackPanel>
 
-                <StackPanel Grid.Row="3">
+                <StackPanel Grid.Row="4">
                     <UniformGrid Columns="2" Margin="0,0,0,6">
                         <Button Content="Bank 1" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
                         <Button Content="Bank 2" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
