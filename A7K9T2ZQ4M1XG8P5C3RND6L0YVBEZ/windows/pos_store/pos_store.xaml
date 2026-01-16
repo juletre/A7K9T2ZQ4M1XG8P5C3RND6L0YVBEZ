@@ -224,7 +224,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
-                <StackPanel Grid.Row="1" Margin="0,0,0,12">
+                <StackPanel Grid.Row="2" Margin="0,0,0,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -251,7 +251,7 @@
                     </Grid>
                 </StackPanel>
 
-                <StackPanel Grid.Row="2">
+                <StackPanel Grid.Row="3">
                     <UniformGrid Columns="2" Margin="0,0,0,6">
                         <Button Content="Bank 1" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
                         <Button Content="Bank 2" Style="{StaticResource PrimaryButton}" Background="#FF2A7F62"/>
