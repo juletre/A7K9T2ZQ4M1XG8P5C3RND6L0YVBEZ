@@ -58,14 +58,14 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.company_selection
 
             if (App.LicenseService == null)
             {
-                AddFallbackSalespoints();
+                MessageBox.Show("Lisensservice er ikke tilgjengelig. Kontroller database-tilkoblingen.");
                 return;
             }
 
             var companies = await App.LicenseService.GetLicensedCompaniesAsync();
             if (!companies.Any())
             {
-                AddFallbackSalespoints();
+                MessageBox.Show("Ingen firmaer funnet for lisensen.");
                 return;
             }
 
@@ -78,16 +78,6 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.company_selection
                     "Ikke satt",
                     "Lisensiert"));
             }
-
-            SelectedSalespoint = Salespoints.FirstOrDefault();
-        }
-
-        private void AddFallbackSalespoints()
-        {
-            Salespoints.Add(new Salespoint("Eventlink Storgata", "Oslo sentrum", "Butikk", "Terminal 03", "Online"));
-            Salespoints.Add(new Salespoint("Eventlink Scene", "Bergen sentrum", "Servering", "Terminal 02", "Online"));
-            Salespoints.Add(new Salespoint("Eventlink Popup", "Trondheim", "Popup", "Terminal 01", "Klar"));
-            Salespoints.Add(new Salespoint("Eventlink Outlet", "Stavanger", "Lager", "Terminal 05", "Vedlikehold"));
 
             SelectedSalespoint = Salespoints.FirstOrDefault();
         }

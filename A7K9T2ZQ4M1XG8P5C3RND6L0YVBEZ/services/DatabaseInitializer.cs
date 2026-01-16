@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using System;
 using System.Threading.Tasks;
 
 namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.services
@@ -14,6 +15,8 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.services
 
         public async Task EnsurePosTablesAsync()
         {
+            await EnsureDatabaseExistsAsync();
+
             const string commandText = @"
 IF OBJECT_ID('dbo.Companies', 'U') IS NULL
 BEGIN
@@ -175,6 +178,8 @@ END
 
         public async Task EnsureLicenseTablesAsync()
         {
+            await EnsureDatabaseExistsAsync();
+
             const string commandText = @"
 IF OBJECT_ID('dbo.Licenses', 'U') IS NULL
 BEGIN
@@ -209,6 +214,56 @@ END
             await connection.OpenAsync();
 
             await using var command = new SqlCommand(commandText, connection);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async Task EnsureSeedCompanyAsync(string licenseNumber, string orgNumber, string companyName)
+        {
+            await using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+
+            const string sql = @"
+IF NOT EXISTS (SELECT 1 FROM dbo.Companies WHERE OrgNumber = @OrgNumber)
+BEGIN
+    INSERT INTO dbo.Companies (LicenseNumber, OrgNumber, CompanyName)
+    VALUES (@LicenseNumber, @OrgNumber, @CompanyName);
+END";
+
+            await using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@LicenseNumber", licenseNumber);
+            command.Parameters.AddWithValue("@OrgNumber", orgNumber);
+            command.Parameters.AddWithValue("@CompanyName", companyName);
+
+            await command.ExecuteNonQueryAsync();
+        }
+
+        private async Task EnsureDatabaseExistsAsync()
+        {
+            var builder = new SqlConnectionStringBuilder(connectionString);
+            var databaseName = builder.InitialCatalog;
+
+            if (string.IsNullOrWhiteSpace(databaseName))
+            {
+                return;
+            }
+
+            var masterBuilder = new SqlConnectionStringBuilder(connectionString)
+            {
+                InitialCatalog = "master"
+            };
+
+            await using var connection = new SqlConnection(masterBuilder.ConnectionString);
+            await connection.OpenAsync();
+
+            const string sql = @"
+IF DB_ID(@DatabaseName) IS NULL
+BEGIN
+    DECLARE @sql NVARCHAR(MAX) = N'CREATE DATABASE [' + @DatabaseName + N']';
+    EXEC sp_executesql @sql;
+END";
+
+            await using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@DatabaseName", databaseName);
             await command.ExecuteNonQueryAsync();
         }
     }

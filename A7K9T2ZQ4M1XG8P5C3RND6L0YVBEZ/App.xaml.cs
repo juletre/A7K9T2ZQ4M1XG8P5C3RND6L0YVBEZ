@@ -26,6 +26,10 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
                 {
                     var posInitializer = new DatabaseInitializer(posConnection);
                     posInitializer.EnsurePosTablesAsync().GetAwaiter().GetResult();
+                    posInitializer.EnsureSeedCompanyAsync(
+                        licenseNumber,
+                        "999999999",
+                        "EVPOS Testfirma").GetAwaiter().GetResult();
                 }
                 else
                 {
@@ -41,24 +45,6 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
                 {
                     MessageBox.Show("Manglende tilkobling til lisensdatabase. Oppdater App.config.");
                 }
-
-            if (string.IsNullOrWhiteSpace(posConnection))
-            {
-                MessageBox.Show("Manglende tilkobling til POS-database. Oppdater App.config.");
-            }
-
-            if (string.IsNullOrWhiteSpace(licenseConnection))
-            {
-                MessageBox.Show("Manglende tilkobling til lisensdatabase. Oppdater App.config.");
-            }
-
-            try
-            {
-                var posInitializer = new DatabaseInitializer(posConnection);
-                posInitializer.EnsurePosTablesAsync().GetAwaiter().GetResult();
-
-                LicenseService = new LicenseService(licenseConnection, licenseNumber);
-                LicenseService.InitializeAsync().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

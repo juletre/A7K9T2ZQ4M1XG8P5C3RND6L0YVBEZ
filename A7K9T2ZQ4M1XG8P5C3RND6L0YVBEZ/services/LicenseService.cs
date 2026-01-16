@@ -34,6 +34,7 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.services
         {
             var initializer = new DatabaseInitializer(connectionString);
             await initializer.EnsureLicenseTablesAsync();
+            await EnsureSeedLicenseAsync();
 
             await RefreshAsync();
             refreshTimer.Start();
@@ -152,6 +153,53 @@ WHERE LicenseNumber = @LicenseNumber";
             command.Parameters.AddWithValue("@LicenseNumber", licenseNumber);
 
             await command.ExecuteNonQueryAsync();
+        }
+
+        private async Task EnsureSeedLicenseAsync()
+        {
+            if (string.IsNullOrWhiteSpace(licenseNumber))
+            {
+                return;
+            }
+
+            await using var connection = new SqlConnection(connectionString);
+            await connection.OpenAsync();
+
+            const string licenseSql = @"
+IF NOT EXISTS (SELECT 1 FROM dbo.Licenses WHERE LicenseNumber = @LicenseNumber)
+BEGIN
+    INSERT INTO dbo.Licenses (LicenseNumber, ContactName, ContactEmail, InvoiceAddress, MaxCompanies, MaxConcurrentPos)
+    VALUES (@LicenseNumber, 'EVPOS Test', 'test@evpos.local', 'Testgata 1', 1, 2);
+END";
+
+            await using (var command = new SqlCommand(licenseSql, connection))
+            {
+                command.Parameters.AddWithValue("@LicenseNumber", licenseNumber);
+                await command.ExecuteNonQueryAsync();
+            }
+
+            const string companySql = @"
+IF NOT EXISTS (
+    SELECT 1
+    FROM dbo.LicenseCompanies c
+    INNER JOIN dbo.Licenses l ON l.Id = c.LicenseId
+    WHERE l.LicenseNumber = @LicenseNumber AND c.OrgNumber = @OrgNumber
+)
+BEGIN
+    INSERT INTO dbo.LicenseCompanies (LicenseId, OrgNumber, CompanyName, ContactEmail)
+    SELECT l.Id, @OrgNumber, @CompanyName, @ContactEmail
+    FROM dbo.Licenses l
+    WHERE l.LicenseNumber = @LicenseNumber;
+END";
+
+            await using (var command = new SqlCommand(companySql, connection))
+            {
+                command.Parameters.AddWithValue("@LicenseNumber", licenseNumber);
+                command.Parameters.AddWithValue("@OrgNumber", "999999999");
+                command.Parameters.AddWithValue("@CompanyName", "EVPOS Testfirma");
+                command.Parameters.AddWithValue("@ContactEmail", "kontakt@evpos.local");
+                await command.ExecuteNonQueryAsync();
+            }
         }
     }
 
