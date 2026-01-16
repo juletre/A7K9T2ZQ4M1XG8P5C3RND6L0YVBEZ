@@ -69,7 +69,7 @@
             <Border Background="#FF242424" CornerRadius="12" Padding="16" Margin="0,0,16,0">
                 <StackPanel>
                     <TextBlock Text="Hurtigvalg" Foreground="White" FontWeight="Bold" FontSize="18" Margin="0,0,0,12"/>
-                    <UniformGrid Columns="1">
+                    <UniformGrid Columns="2">
                         <Button Height="64" Click="OpenPos_Click" Content="Kasse" FontSize="22" FontWeight="Bold" Style="{StaticResource PrimaryButton}"/>
                         <Button Height="64" Click="Open_Salespoint_Selector" Content="Firma" Style="{StaticResource SecondaryButton}"/>
                         <Button Height="64" Click="Open_Settlement" Content="Oppgjør" Style="{StaticResource SecondaryButton}"/>

@@ -159,6 +159,11 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
             UpdateTotals();
         }
 
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void CommandInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter || sender is not TextBox input)
