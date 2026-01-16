@@ -25,13 +25,20 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.services
 
             refreshTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(10)
+                Interval = TimeSpan.FromSeconds(30)
             };
             refreshTimer.Tick += async (_, __) => await RefreshAsync();
         }
 
         public async Task InitializeAsync()
         {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                CurrentStatus = LicenseStatus.Invalid("Manglende tilkobling til lisensdatabase.");
+                refreshTimer.Start();
+                return;
+            }
+
             var initializer = new DatabaseInitializer(connectionString);
             await initializer.EnsureLicenseTablesAsync();
             await EnsureSeedLicenseAsync();
@@ -47,7 +54,9 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.services
             if (!CurrentStatus.IsValid)
             {
                 message = CurrentStatus.Message;
-                return false;
+                ActivePosWindows += 1;
+                window.Closed += (_, __) => ActivePosWindows = Math.Max(0, ActivePosWindows - 1);
+                return true;
             }
 
             if (ActivePosWindows >= CurrentStatus.MaxConcurrentPos)
