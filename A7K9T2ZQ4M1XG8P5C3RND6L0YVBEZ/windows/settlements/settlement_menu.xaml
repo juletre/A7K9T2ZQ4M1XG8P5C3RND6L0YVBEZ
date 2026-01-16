@@ -5,8 +5,79 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.settlements"
         mc:Ignorable="d"
-        Title="settlement_menu" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"> 
-    <Grid>
-        
+        Title="Oppgjør" Height="600" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF1E1E1E"> 
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,16">
+            <TextBlock Text="Oppgjør" Foreground="White" FontSize="26" FontWeight="Bold"/>
+            <TextBlock Text="Oversikt over dagens salg og oppgjør." Foreground="#FFB0B0B0" FontSize="14"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="#FF2A2A2A" CornerRadius="12" Padding="16" Margin="0,0,16,0">
+            <StackPanel>
+                <TextBlock Text="Dagens oppsummering" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Omsetning" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Column="1" Text="kr 142 560" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="1" Text="Antall salg" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="312" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="2" Text="Kontant" Foreground="#FFB0B0B0" Margin="0,0,12,8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="kr 12 450" Foreground="White" Margin="0,0,0,8"/>
+
+                    <TextBlock Grid.Row="3" Text="Kort/Vipps" Foreground="#FFB0B0B0" Margin="0,0,12,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="kr 130 110" Foreground="White"/>
+                </Grid>
+
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Siste oppgjør" Foreground="White" FontWeight="SemiBold"/>
+                        <TextBlock Text="Gjennomført 12:45, 24.04.2024" Foreground="#FFB0B0B0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Background="#FF2A2A2A" CornerRadius="12" Padding="16">
+            <StackPanel>
+                <TextBlock Text="Handlinger" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                <Button Content="Start dagsoppgjør" Height="44" Margin="0,0,0,8" Background="#FF3A6EA5" Foreground="White"/>
+                <Button Content="Skriv ut rapport" Height="44" Margin="0,0,0,8" Background="#FF4B4B4B" Foreground="White"/>
+                <Button Content="Eksporter til regnskap" Height="44" Margin="0,0,0,8" Background="#FF4B4B4B" Foreground="White"/>
+                <Button Content="Se oppgjørshistorikk" Height="44" Background="#FF4B4B4B" Foreground="White"/>
+
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,16,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Tips" Foreground="White" FontWeight="SemiBold"/>
+                        <TextBlock Text="Kontroller kontantbeholdning før du kjører dagsoppgjør." Foreground="#FFB0B0B0" TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Lukk" Width="120" Height="40" Background="#FF3A3A3A" Foreground="White" Click="Close_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
