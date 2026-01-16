@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.administration"
         mc:Ignorable="d"
-        Title="pos_hospitality" Height="1080" Width="1920" Background="Black">
+        Title="EvPOS - Admin" Height="1080" Width="1920" Background="#FF1E1E1E">
     <Window.Resources>
         <Style x:Key="ProductButton" TargetType="Button">
             <Setter Property="FontSize" Value="24"/>
@@ -170,7 +170,7 @@
              Columns="10"
              Margin="0,0,0,0"
              Height="75px"
-             Background="Gray">
+             Background="#FF2A2A2A">
             <Button x:Name="functionButton1" Content="Function 1" Style="{StaticResource ShortcutButton}"/>
             <Button x:Name="functionButton2" Content="Function 2" Style="{StaticResource ShortcutButton}"/>
             <Button x:Name="functionButton3" Content="Function 3" Style="{StaticResource ShortcutButton}"/>
@@ -189,7 +189,7 @@
              Rows="10"
              Columns="1"
              Margin="0,10,10,0"
-             Background="Gray">
+             Background="#FF242424">
             <Button Content="Category 1" Style="{StaticResource CategoryButton}"/>
             <Button Content="Category 2" Style="{StaticResource CategoryButton}"/>
             <Button Content="Category 3" Style="{StaticResource CategoryButton}"/>
