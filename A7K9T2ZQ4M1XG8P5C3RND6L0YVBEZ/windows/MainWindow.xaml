@@ -5,22 +5,89 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ"
         mc:Ignorable="d"
-        Title="EvPOS" Height="450" Background="#FF6D6C6C" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid Margin="20,20,18,20">
-        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Width="125" Height="50" Click="Open_Support" FontSize="18" Content="SUPPORT"/>
-        <Button VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="125" Height="75" Click="OpenAdmin_Click" Margin="0,0,0,20" FontSize="32" Content="ADMIN" FontWeight="Bold" />
-        <Button VerticalAlignment="Bottom" Width="125" Height="75" Click="Open_Salespoint_Selector" Margin="0,0,200,20" Content="FIRMA" FontSize="18" />
-        <Button VerticalAlignment="Bottom" Width="125" Height="75" Click="Open_Settlement" Margin="0,0,-200,20" Content="OPPGJØR" FontSize="18" />
-        <Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="125" Height="75" Click="OpenPos_Click" Margin="0,0,0,20" Content="KASSE" FontSize="32" FontWeight="Bold" />
-        <Image Margin="0,75,400,125" OpacityMask="#FFB4B4B4" Source="/Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png" />
+        Title="EvPOS" Height="650" Background="#FF1E1E1E" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="#FF3A6EA5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF2F5C89"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF244463"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FF4B4B4B"/>
+        </Style>
+    </Window.Resources>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-60,-420,0">
-            <TextBlock Text="Eventlink AS" FontSize="24" FontWeight="Bold"/>
-            <TextBlock Text="Lisens: EVPOS-2024-0098" Margin="0,6,0,0"/>
-            <TextBlock Text="Storgata 12" Margin="0,6,0,0"/>
-            <TextBlock Text="0184 Oslo" Margin="0,6,0,0"/>
-        </StackPanel>
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom">EvPOS™ </TextBlock>
+        <Border Grid.Row="0" Background="#FF2A2A2A" CornerRadius="12" Padding="16" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Width="18" Height="18" CornerRadius="9" Background="#FF3CCB5F" BorderBrush="#FF1E1E1E" BorderThickness="2" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="EvPOS" FontSize="26" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Eventlink AS · Lisens EVPOS-2024-0098" Foreground="#FFCCCCCC" FontSize="14"/>
+                </StackPanel>
+                <Button Grid.Column="2" Width="140" Height="44" Click="Open_Support" Content="Support" Style="{StaticResource SecondaryButton}"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Background="#FF242424" CornerRadius="12" Padding="16" Margin="0,0,16,0">
+                <StackPanel>
+                    <TextBlock Text="Hurtigvalg" Foreground="White" FontWeight="Bold" FontSize="18" Margin="0,0,0,12"/>
+                    <UniformGrid Columns="1">
+                        <Button Height="64" Click="OpenPos_Click" Content="Kasse" FontSize="22" FontWeight="Bold" Style="{StaticResource PrimaryButton}"/>
+                        <Button Height="64" Click="Open_Salespoint_Selector" Content="Firma" Style="{StaticResource SecondaryButton}"/>
+                        <Button Height="64" Click="Open_Settlement" Content="Oppgjør" Style="{StaticResource SecondaryButton}"/>
+                        <Button Height="64" Click="OpenAdmin_Click" Content="Admin" FontSize="22" FontWeight="Bold" Style="{StaticResource PrimaryButton}"/>
+                    </UniformGrid>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Background="#FF242424" CornerRadius="12" Padding="16">
+                <StackPanel>
+                    <Image Height="120" Margin="0,0,0,16" OpacityMask="#FFB4B4B4" Source="/Eventlink2023_sort-logo-transparent-bakgrunn_utenkontaktinfo-og-slagord.png"/>
+                    <TextBlock Text="Eventlink AS" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="Storgata 12" Foreground="#FFB0B0B0" Margin="0,6,0,0"/>
+                    <TextBlock Text="0184 Oslo" Foreground="#FFB0B0B0" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" Foreground="#FF8E8E8E" Text="EvPOS™" Margin="0,16,0,0"/>
     </Grid>
 </Window>

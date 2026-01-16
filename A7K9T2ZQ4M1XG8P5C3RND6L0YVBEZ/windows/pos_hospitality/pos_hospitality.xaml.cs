@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
 {
@@ -82,16 +83,16 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
             Categories.Add("Tilbehør");
             Categories.Add("Kampanjer");
 
-            Products.Add(new Product("Cappuccino", "Drikke", 42.00m));
-            Products.Add(new Product("Espresso", "Drikke", 34.00m));
-            Products.Add(new Product("Islatte", "Drikke", 49.00m));
-            Products.Add(new Product("Mineralvann", "Drikke", 32.00m));
-            Products.Add(new Product("Club sandwich", "Mat", 129.00m));
-            Products.Add(new Product("Caesar salat", "Mat", 119.00m));
-            Products.Add(new Product("Burger", "Mat", 159.00m));
-            Products.Add(new Product("Pommes frites", "Tilbehør", 59.00m));
-            Products.Add(new Product("Brownie", "Dessert", 79.00m));
-            Products.Add(new Product("Iskrem", "Dessert", 65.00m));
+            Products.Add(new Product("100001", "Cappuccino", "Drikke", 42.00m));
+            Products.Add(new Product("100002", "Espresso", "Drikke", 34.00m));
+            Products.Add(new Product("100003", "Islatte", "Drikke", 49.00m));
+            Products.Add(new Product("100004", "Mineralvann", "Drikke", 32.00m));
+            Products.Add(new Product("100005", "Club sandwich", "Mat", 129.00m));
+            Products.Add(new Product("100006", "Caesar salat", "Mat", 119.00m));
+            Products.Add(new Product("100007", "Burger", "Mat", 159.00m));
+            Products.Add(new Product("100008", "Pommes frites", "Tilbehør", 59.00m));
+            Products.Add(new Product("100009", "Brownie", "Dessert", 79.00m));
+            Products.Add(new Product("100010", "Iskrem", "Dessert", 65.00m));
 
             ProductsView = CollectionViewSource.GetDefaultView(Products);
             ProductsView.Filter = FilterProducts;
@@ -133,6 +134,91 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
                 return;
             }
 
+            SubmitCommand(product.Code);
+        }
+
+        private void RemoveLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is OrderLine line)
+            {
+                OrderLines.Remove(line);
+                UpdateTotals();
+            }
+        }
+
+        private void ClearOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OrderLines.Clear();
+            UpdateTotals();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void CommandInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter || sender is not TextBox input)
+            {
+                return;
+            }
+
+            ExecuteCommand(input.Text);
+            input.Clear();
+            e.Handled = true;
+        }
+
+        private void SubmitCommand(string command)
+        {
+            if (CommandInput == null)
+            {
+                return;
+            }
+
+            CommandInput.Text = command;
+            CommandInput.CaretIndex = CommandInput.Text.Length;
+            ExecuteCommand(CommandInput.Text);
+            CommandInput.Clear();
+        }
+
+        private void ExecuteCommand(string input)
+        {
+            var trimmed = input.Trim();
+            if (string.IsNullOrWhiteSpace(trimmed))
+            {
+                return;
+            }
+
+            if (trimmed.StartsWith("%"))
+            {
+                MessageBox.Show($"Kommando mottatt: {trimmed}");
+                return;
+            }
+
+            if (trimmed.All(char.IsDigit))
+            {
+                HandleNumericCommand(trimmed);
+                return;
+            }
+
+            MessageBox.Show("Ugyldig kommandoformat.");
+        }
+
+        private void HandleNumericCommand(string code)
+        {
+            var product = Products.FirstOrDefault(item => item.Code == code);
+            if (product == null)
+            {
+                MessageBox.Show($"Fant ingen vare for nummer {code}.");
+                return;
+            }
+
+            AddProductToOrder(product);
+        }
+
+        private void AddProductToOrder(Product product)
+        {
             var existing = OrderLines.FirstOrDefault(line => line.Product == product.Name);
             if (existing != null)
             {
@@ -153,21 +239,6 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
             UpdateTotals();
         }
 
-        private void RemoveLine_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.DataContext is OrderLine line)
-            {
-                OrderLines.Remove(line);
-                UpdateTotals();
-            }
-        }
-
-        private void ClearOrder_Click(object sender, RoutedEventArgs e)
-        {
-            OrderLines.Clear();
-            UpdateTotals();
-        }
-
         private void UpdateTotals()
         {
             Subtotal = OrderLines.Sum(line => line.LineTotal);
@@ -185,13 +256,15 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_hospitality
 
     public class Product
     {
-        public Product(string name, string category, decimal price)
+        public Product(string code, string name, string category, decimal price)
         {
+            Code = code;
             Name = name;
             Category = category;
             Price = price;
         }
 
+        public string Code { get; }
         public string Name { get; }
         public string Category { get; }
         public decimal Price { get; }

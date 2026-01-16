@@ -5,8 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ"
         mc:Ignorable="d"
-        Title="guided_setup" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid>
-        
+        Title="EvPOS - Oppsett" Height="600" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF1E1E1E">
+    <Window.Resources>
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Margin" Value="6"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Background" Value="#FF3A6EA5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF2F5C89"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF244463"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FF4B4B4B"/>
+        </Style>
+        <Style x:Key="InputBox" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#FF1E1E1E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#FF2A2A2A" CornerRadius="12" Padding="16" Margin="0,0,0,16">
+            <StackPanel>
+                <TextBlock Text="Førstegangsoppsett" Foreground="White" FontSize="26" FontWeight="Bold"/>
+                <TextBlock Text="Dette oppsettet benyttes kun ved førstegangsinstallasjon." Foreground="#FFB0B0B0" FontSize="14"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Background="#FF242424" CornerRadius="12" Padding="16" Margin="0,0,16,0">
+                <StackPanel>
+                    <TextBlock Text="Lisensinformasjon" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                    <TextBlock Text="Lisensnummer" Foreground="#FFB0B0B0"/>
+                    <TextBox Style="{StaticResource InputBox}" Text="EVPOS-2024-0098" Margin="0,6,0,12"/>
+                    <TextBlock Text="Kontaktperson" Foreground="#FFB0B0B0"/>
+                    <TextBox Style="{StaticResource InputBox}" Text="Ola Nordmann" Margin="0,6,0,12"/>
+                    <TextBlock Text="E-post" Foreground="#FFB0B0B0"/>
+                    <TextBox Style="{StaticResource InputBox}" Text="kontakt@eventlink.no" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Background="#FF242424" CornerRadius="12" Padding="16">
+                <StackPanel>
+                    <TextBlock Text="Database" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                    <TextBlock Text="Server" Foreground="#FFB0B0B0"/>
+                    <TextBox Style="{StaticResource InputBox}" Text="(local)" Margin="0,6,0,12"/>
+                    <TextBlock Text="Database" Foreground="#FFB0B0B0"/>
+                    <TextBox Style="{StaticResource InputBox}" Text="EvPOS_DB" Margin="0,6,0,12"/>
+                    <TextBlock Text="Status" Foreground="#FFB0B0B0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                        <Border Width="12" Height="12" CornerRadius="6" Background="#FFB71C1C" Margin="0,3,8,0"/>
+                        <TextBlock Text="Ikke koblet til" Foreground="#FFB0B0B0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Avbryt" Width="120" Height="40" Style="{StaticResource SecondaryButton}"/>
+            <Button Content="Fullfør oppsett" Width="180" Height="40" Style="{StaticResource PrimaryButton}"/>
+        </StackPanel>
     </Grid>
 </Window>

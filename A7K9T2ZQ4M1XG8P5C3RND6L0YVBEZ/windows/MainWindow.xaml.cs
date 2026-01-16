@@ -31,17 +31,25 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
 
         private void OpenPos_Click(object sender, RoutedEventArgs e)
         {
-            if (App.LicenseService == null)
-            {
-                MessageBox.Show("Lisenskontroll er ikke tilgjengelig. Kontroller tilkobling til lisensdatabase.");
-                return;
-            }
-
             Window? posWindow = null;
             if (pos_type == 1)
+            {
+                if (App.TryActivateWindow<pos_hospitality>())
+                {
+                    return;
+                }
+
                 posWindow = new pos_hospitality();
+            }
             else if (pos_type == 2)
+            {
+                if (App.TryActivateWindow<pos_store>())
+                {
+                    return;
+                }
+
                 posWindow = new pos_store();
+            }
             else
                 MessageBox.Show("Error");
 
@@ -50,29 +58,31 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
                 return;
             }
 
-            if (!App.LicenseService.TryRegisterPosWindow(posWindow, out var message))
+            if (App.LicenseService != null
+                && !App.LicenseService.TryRegisterPosWindow(posWindow, out var message))
             {
                 MessageBox.Show(message);
                 return;
             }
 
+            App.RegisterWindow(posWindow);
             posWindow.Show();
         }
         private void OpenAdmin_Click(object sender, RoutedEventArgs e)
         {
-                new admin_window().Show();
+                App.ShowSingleWindow(() => new admin_window());
         }
         private void Open_Settlement(object sender, RoutedEventArgs e)
         {
-            new settlement_menu().Show();
+            App.ShowSingleWindow(() => new settlement_menu());
         }
         private void Open_Support(object sender, RoutedEventArgs e)
         {
-            new support_window().Show();
+            App.ShowSingleWindow(() => new support_window());
         }
         private void Open_Salespoint_Selector(object sender, RoutedEventArgs e)
         {
-            new salespoint_selector().Show();
+            App.ShowSingleWindow(() => new salespoint_selector());
         }
     }
 }
