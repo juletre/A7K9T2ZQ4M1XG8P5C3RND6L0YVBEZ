@@ -58,27 +58,41 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.company_selection
 
             if (App.LicenseService == null)
             {
-                MessageBox.Show("Lisensservice er ikke tilgjengelig. Kontroller database-tilkoblingen.");
+                AddFallbackCompanies();
                 return;
             }
 
-            var companies = await App.LicenseService.GetLicensedCompaniesAsync();
-            if (!companies.Any())
+            try
             {
-                MessageBox.Show("Ingen firmaer funnet for lisensen.");
-                return;
-            }
+                var companies = await App.LicenseService.GetLicensedCompaniesAsync();
+                if (!companies.Any())
+                {
+                    AddFallbackCompanies();
+                    return;
+                }
 
-            foreach (var company in companies)
+                foreach (var company in companies)
+                {
+                    Salespoints.Add(new Salespoint(
+                        company.CompanyName,
+                        company.OrgNumber,
+                        "Firma",
+                        "Ikke satt",
+                        "Lisensiert"));
+                }
+
+                SelectedSalespoint = Salespoints.FirstOrDefault();
+            }
+            catch
             {
-                Salespoints.Add(new Salespoint(
-                    company.CompanyName,
-                    company.OrgNumber,
-                    "Firma",
-                    "Ikke satt",
-                    "Lisensiert"));
+                AddFallbackCompanies();
             }
+        }
 
+        private void AddFallbackCompanies()
+        {
+            Salespoints.Add(new Salespoint("Demo AS", "999999999", "Firma", "Ikke satt", "Ikke validert"));
+            Salespoints.Add(new Salespoint("Eksempel Drift", "888888888", "Firma", "Ikke satt", "Ikke validert"));
             SelectedSalespoint = Salespoints.FirstOrDefault();
         }
 

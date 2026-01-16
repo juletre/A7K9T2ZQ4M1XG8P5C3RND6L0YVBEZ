@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
 {
@@ -83,22 +84,22 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
             Categories.Add("Husholdning");
             Categories.Add("Gavekort");
 
-            Products.Add(new Product("Kaffe latte", "Drikke", 39.00m));
-            Products.Add(new Product("Iskald te", "Drikke", 32.00m));
-            Products.Add(new Product("Smoothie", "Drikke", 45.00m));
-            Products.Add(new Product("Mineralvann", "Drikke", 28.00m));
-            Products.Add(new Product("Potetgull", "Snacks", 35.00m));
-            Products.Add(new Product("Nøtteblanding", "Snacks", 42.00m));
-            Products.Add(new Product("Sjokolade", "Snacks", 29.00m));
-            Products.Add(new Product("Kjeks", "Snacks", 25.00m));
-            Products.Add(new Product("Brød", "Dagligvarer", 32.00m));
-            Products.Add(new Product("Melk", "Dagligvarer", 24.00m));
-            Products.Add(new Product("Egg", "Dagligvarer", 45.00m));
-            Products.Add(new Product("Yoghurt", "Dagligvarer", 21.00m));
-            Products.Add(new Product("Håndkrem", "Helse", 55.00m));
-            Products.Add(new Product("Plaster", "Helse", 29.00m));
-            Products.Add(new Product("Vitaminer", "Helse", 89.00m));
-            Products.Add(new Product("Gavekort 200", "Gavekort", 200.00m));
+            Products.Add(new Product("200001", "Kaffe latte", "Drikke", 39.00m));
+            Products.Add(new Product("200002", "Iskald te", "Drikke", 32.00m));
+            Products.Add(new Product("200003", "Smoothie", "Drikke", 45.00m));
+            Products.Add(new Product("200004", "Mineralvann", "Drikke", 28.00m));
+            Products.Add(new Product("200005", "Potetgull", "Snacks", 35.00m));
+            Products.Add(new Product("200006", "Nøtteblanding", "Snacks", 42.00m));
+            Products.Add(new Product("200007", "Sjokolade", "Snacks", 29.00m));
+            Products.Add(new Product("200008", "Kjeks", "Snacks", 25.00m));
+            Products.Add(new Product("200009", "Brød", "Dagligvarer", 32.00m));
+            Products.Add(new Product("200010", "Melk", "Dagligvarer", 24.00m));
+            Products.Add(new Product("200011", "Egg", "Dagligvarer", 45.00m));
+            Products.Add(new Product("200012", "Yoghurt", "Dagligvarer", 21.00m));
+            Products.Add(new Product("200013", "Håndkrem", "Helse", 55.00m));
+            Products.Add(new Product("200014", "Plaster", "Helse", 29.00m));
+            Products.Add(new Product("200015", "Vitaminer", "Helse", 89.00m));
+            Products.Add(new Product("200016", "Gavekort 200", "Gavekort", 200.00m));
 
             ProductsView = CollectionViewSource.GetDefaultView(Products);
             ProductsView.Filter = FilterProducts;
@@ -140,6 +141,86 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
                 return;
             }
 
+            SubmitCommand(product.Code);
+        }
+
+        private void RemoveLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is OrderLine line)
+            {
+                OrderLines.Remove(line);
+                UpdateTotals();
+            }
+        }
+
+        private void ClearOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OrderLines.Clear();
+            UpdateTotals();
+        }
+
+        private void CommandInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter || sender is not TextBox input)
+            {
+                return;
+            }
+
+            ExecuteCommand(input.Text);
+            input.Clear();
+            e.Handled = true;
+        }
+
+        private void SubmitCommand(string command)
+        {
+            if (CommandInput == null)
+            {
+                return;
+            }
+
+            CommandInput.Text = command;
+            CommandInput.CaretIndex = CommandInput.Text.Length;
+            ExecuteCommand(CommandInput.Text);
+            CommandInput.Clear();
+        }
+
+        private void ExecuteCommand(string input)
+        {
+            var trimmed = input.Trim();
+            if (string.IsNullOrWhiteSpace(trimmed))
+            {
+                return;
+            }
+
+            if (trimmed.StartsWith("%"))
+            {
+                MessageBox.Show($"Kommando mottatt: {trimmed}");
+                return;
+            }
+
+            if (trimmed.All(char.IsDigit))
+            {
+                HandleNumericCommand(trimmed);
+                return;
+            }
+
+            MessageBox.Show("Ugyldig kommandoformat.");
+        }
+
+        private void HandleNumericCommand(string code)
+        {
+            var product = Products.FirstOrDefault(item => item.Code == code);
+            if (product == null)
+            {
+                MessageBox.Show($"Fant ingen vare for nummer {code}.");
+                return;
+            }
+
+            AddProductToOrder(product);
+        }
+
+        private void AddProductToOrder(Product product)
+        {
             var existing = OrderLines.FirstOrDefault(line => line.Product == product.Name);
             if (existing != null)
             {
@@ -160,21 +241,6 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
             UpdateTotals();
         }
 
-        private void RemoveLine_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.DataContext is OrderLine line)
-            {
-                OrderLines.Remove(line);
-                UpdateTotals();
-            }
-        }
-
-        private void ClearOrder_Click(object sender, RoutedEventArgs e)
-        {
-            OrderLines.Clear();
-            UpdateTotals();
-        }
-
         private void UpdateTotals()
         {
             Subtotal = OrderLines.Sum(line => line.LineTotal);
@@ -192,13 +258,15 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.windows.pos_store
 
     public class Product
     {
-        public Product(string name, string category, decimal price)
+        public Product(string code, string name, string category, decimal price)
         {
+            Code = code;
             Name = name;
             Category = category;
             Price = price;
         }
 
+        public string Code { get; }
         public string Name { get; }
         public string Category { get; }
         public decimal Price { get; }
