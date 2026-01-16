@@ -71,51 +71,45 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Border Width="12" Height="12" CornerRadius="6" Background="#FF3CCB5F" Margin="0,4,10,0"/>
                         <StackPanel>
-                            <TextBlock Text="Synkronisering" Foreground="White"/>
-                            <TextBlock Text="Oppdatert for 2 min siden" Foreground="#FFB0B0B0"/>
+                            <TextBlock Text="Betalingsterminal" Foreground="White"/>
+                            <TextBlock Text="Online" Foreground="#FF8BC34A"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
-                <Border Background="#FF242424">
-                    <StackPanel>
-                        <UniformGrid Columns="2">
-                            <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,6,12">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Width="12" Height="12" CornerRadius="6" Background="#FF3CCB5F" Margin="0,4,10,0"/>
-                                    <StackPanel>
-                                        <TextBlock Text="Betalingsterminal 1" Foreground="White"/>
-                                        <TextBlock Text="Online" Foreground="#FF8BC34A"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                            <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="6,0,0,12">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Width="12" Height="12" CornerRadius="6" Background="Yellow" Margin="0,4,10,0"/>
-                                    <StackPanel>
-                                        <TextBlock Text="Betalingsterminal 2" Foreground="White"/>
-                                        <TextBlock Text="Ikke aktivert" Foreground="#FFB0B0B0"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                            <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,6,12">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Width="12" Height="12" CornerRadius="6" Background="Yellow" Margin="0,4,10,0"/>
-                                    <StackPanel>
-                                        <TextBlock Text="Betalingsterminal 3" Foreground="White"/>
-                                        <TextBlock Text="Ikke aktivert" Foreground="#FFB0B0B0"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                            <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="6,0,0,12">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Width="12" Height="12" CornerRadius="6" Background="Yellow" Margin="0,4,10,0"/>
-                                    <StackPanel>
-                                        <TextBlock Text="Betalingsterminal 4" Foreground="White"/>
-                                        <TextBlock Text="Ikke aktivert" Foreground="#FFB0B0B0"/>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </UniformGrid>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="12" Height="12" CornerRadius="6" Background="#FFB71C1C" Margin="0,4,10,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Betalingsterminal 2" Foreground="White"/>
+                            <TextBlock Text="Ikke aktivert" Foreground="#FFB0B0B0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="12" Height="12" CornerRadius="6" Background="#FFB71C1C" Margin="0,4,10,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Betalingsterminal 3" Foreground="White"/>
+                            <TextBlock Text="Ikke aktivert" Foreground="#FFB0B0B0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="12" Height="12" CornerRadius="6" Background="#FFB71C1C" Margin="0,4,10,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Betalingsterminal 4" Foreground="White"/>
+                            <TextBlock Text="Ikke aktivert" Foreground="#FFB0B0B0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Background="#FF1E1E1E" CornerRadius="10" Padding="12">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="12" Height="12" CornerRadius="6" Background="#FF3CCB5F" Margin="0,4,10,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Synkronisering" Foreground="White"/>
+                            <TextBlock Text="Oppdatert for 2 min siden" Foreground="#FFB0B0B0"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -130,9 +124,9 @@
                 <TextBlock Text="support@eventlink.no" Foreground="White" Margin="0,0,0,16"/>
 
                 <TextBlock Text="Hurtighandlinger" Foreground="White" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
-                <Button Content="Send logg til support" Height="44" Margin="0,0,0,12" Style="{StaticResource PrimaryButton}"/>
-                <Button Content="Test betalingsterminal" Height="44" Margin="0,0,0,12" Style="{StaticResource SecondaryButton}"/>
-                <Button Content="Restart synkronisering" Height="44" Margin="0,0,0,12" Style="{StaticResource SecondaryButton}"/>
+                <Button Content="Send logg til support" Height="44" Margin="0,0,0,8" Style="{StaticResource PrimaryButton}"/>
+                <Button Content="Test betalingsterminal" Height="44" Margin="0,0,0,8" Style="{StaticResource SecondaryButton}"/>
+                <Button Content="Restart synkronisering" Height="44" Style="{StaticResource SecondaryButton}"/>
             </StackPanel>
         </Border>
 
