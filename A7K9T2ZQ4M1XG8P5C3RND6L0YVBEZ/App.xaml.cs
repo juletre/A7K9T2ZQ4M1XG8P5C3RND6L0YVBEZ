@@ -1,6 +1,9 @@
 ﻿using A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ.services;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
@@ -11,45 +14,76 @@ namespace A7K9T2ZQ4M1XG8P5C3RND6L0YVBEZ
     public partial class App : Application
     {
         public static LicenseService? LicenseService { get; private set; }
+        private static readonly Dictionary<Type, Window> OpenWindows = new();
+
+        public static bool TryActivateWindow<T>() where T : Window
+        {
+            if (OpenWindows.TryGetValue(typeof(T), out var window) && window.IsVisible)
+            {
+                window.Activate();
+                window.Focus();
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void ShowSingleWindow<T>(Func<T> factory) where T : Window
+        {
+            if (TryActivateWindow<T>())
+            {
+                return;
+            }
+
+            var window = factory();
+            RegisterWindow(window);
+            window.Show();
+        }
+
+        public static void RegisterWindow(Window window)
+        {
+            var type = window.GetType();
+            OpenWindows[type] = window;
+            window.Closed += (_, __) => OpenWindows.Remove(type);
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
+            var mainWindow = new MainWindow();
+            MainWindow = mainWindow;
+            RegisterWindow(mainWindow);
+            mainWindow.Show();
+
+            _ = InitializeServicesAsync();
+        }
+
+        private static async Task InitializeServicesAsync()
+        {
             var posConnection = ConfigurationManager.ConnectionStrings["PosDatabase"]?.ConnectionString ?? string.Empty;
             var licenseConnection = ConfigurationManager.ConnectionStrings["LicenseDatabase"]?.ConnectionString ?? string.Empty;
             var licenseNumber = ConfigurationManager.AppSettings["LicenseNumber"] ?? string.Empty;
 
-            try
+            if (!string.IsNullOrWhiteSpace(posConnection))
             {
-                if (!string.IsNullOrWhiteSpace(posConnection))
+                try
                 {
                     var posInitializer = new DatabaseInitializer(posConnection);
-                    posInitializer.EnsurePosTablesAsync().GetAwaiter().GetResult();
-                    posInitializer.EnsureSeedCompanyAsync(
+                    await posInitializer.EnsurePosTablesAsync();
+                    await posInitializer.EnsureSeedCompanyAsync(
                         licenseNumber,
                         "999999999",
-                        "EVPOS Testfirma").GetAwaiter().GetResult();
+                        "EVPOS Testfirma");
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Manglende tilkobling til POS-database. Oppdater App.config.");
+                    Debug.WriteLine($"Pos-initialisering feilet: {ex.Message}");
                 }
+            }
 
-                if (!string.IsNullOrWhiteSpace(licenseConnection))
-                {
-                    LicenseService = new LicenseService(licenseConnection, licenseNumber);
-                    LicenseService.InitializeAsync().GetAwaiter().GetResult();
-                }
-                else
-                {
-                    MessageBox.Show("Manglende tilkobling til lisensdatabase. Oppdater App.config.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Oppstart feilet: {ex.Message}");
-            }
+            LicenseService = new LicenseService(licenseConnection, licenseNumber);
+            await LicenseService.InitializeAsync();
         }
     }
 }
